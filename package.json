@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/hamzahhisham306/airline-system/issues"
   },
-  "homepage": "https://github.com/hamzahhisham306/airline-system#readme"
+  "homepage": "https://github.com/hamzahhisham306/airline-system#readme",
+  "dependencies": {
+    "socket.io": "^4.5.3",
+    "socket.io-client": "^4.5.3"
+  }
 }

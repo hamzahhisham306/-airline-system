@@ -1,18 +1,50 @@
 'use strict';
 
-const manager = require('./manager');
+const io = require( 'socket.io' )( 4000 );
 
-function createId(){
-    return Math.floor((1 + Math.random()) * 0x1000000000000).toString(20);
-}
+io.on( 'connection', ( socket ) => {
+    socket.on( 'new-flight', ( info ) => {
+        io.emit( 'new-flight', info );
+        console.log( 'Flight',{
+            event: 'new-flight',
+            time: new Date(),
+            info: {
+                airLine: info.airLine,
+                flightID: info.flightID,
+                pilot: info.pilot,
+                destination: info.destination,
+            }
+        });
+    } );
+    socket.on('arrived', ( info ) => {
+        io.emit( 'arrived', info );
+        console.log( 'Flight' ,{
+            event: 'arrived',
+            time: new Date,
+            info: {
+                airLine: info.airLine,
+                flightID: info.flightID,
+                pilot: info.pilot,
+                destination: info.destination,
+            }
+        });
+    } );
+} );
 
 
-Promise.all([
-    new Promise(resolve => setInterval(Interval, 10000)),
-]);
+const socketAirline = io.of('/airline');
 
-function Interval(){
-    let id=createId();
-   return manager.emit('new-flight',(id));
-
-}
+socketAirline.on( 'connection', ( socket ) => {
+    socket.on( 'took-off', ( info ) => {
+        console.log( 'Flight',{
+            event: 'took-off',
+            time: new Date,
+            info: {
+                airLine: info.airLine,
+                flightID: info.flightID,
+                pilot: info.pilot,
+                destination: info.destination,
+            }
+        });
+    } );
+} );
